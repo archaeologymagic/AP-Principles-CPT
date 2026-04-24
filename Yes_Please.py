@@ -16,7 +16,7 @@ upgrades = {
     "expert yesser" : 80,
     "never-say-never" : 160,
     "yes god" : 320,
-#These upgrades help yes production faster by making auto generating yes' and extra yes' per click
+#These upgrades help yes production faster by making auto generating yes' and extra yes' per click. They are buyable by typing "shop"
 }
 
 owned_upgrades = {
@@ -26,59 +26,84 @@ owned_upgrades = {
     "expert yesser" : 0,
     "never-say-never" : 0,
     "yes god" : 0,
-#These are all the upgrades owned by the player, they can be bought with agreements
+#These upgrades help yes production faster by making auto generating yes' and extra yes' per click
+}
+
+
+upgrade_multiplyer = {
+    "obedient man": 1,
+    "yes please" : 5,
+    "yes day" : 10,
+    "expert yesser" : 20,
+    "never-say-never" : 40,
+    "yes god" : 50,
+#These are all the upgrades owned by the player, they can be bought with agreements. These upgrades can buff the amount of agreements a player can get at a time
+
 }
 
 valid_words = ["yes", "shop", "close"]
 valid_upgrades = []
-
-def response_check(a):
-    if a in valid_words:
-        return a
-    else:
-        return False
     
-#This checks which words are ok for the user to say, like for the shop or to close it
-def has_upgrade(a):
-     for i in owned_upgrades:
-        if i == a:
-            return True
+def upgrade_adder(a):
+    global agreements_per_yes
+    global agreements
+    multi = upgrade_multiplyer[a]
+    cost = upgrades[a]
+    if a in upgrades:
+        if agreements >= cost:
+            agreements_per_yes += multi
+            agreements -= cost
+            owned_upgrades[a] += 1
         else:
-            print("Try again!")
-#This section of code defines whether the player is opening or clsoing the shop
+             return 0
+    else: 
+        return 0
+    
 def shop(a):
     for x, y in a.items():
         print(x," : ", y)
+#This section of code defines whether the player is opening or clsoing the shop
+
+def response_check(a):
+    global agreements
+    global agreements_per_yes
+    global is_shop
+    a = a.lower()
+    if a in valid_words:
+        if a == "shop":
+            is_shop = True
+            shop(upgrades)
+        elif a == "yes":
+            agreements += agreements_per_yes
+            print(agreements)
+    else:
+        return False
+#This checks which words are ok for the user to say, like for the shop or to close it
+
+
 
 # Tutorial
 is_tutorial = input("Would you like a tutorial (y/n) ? \n")
 is_tutorial = is_tutorial.lower()
 if is_tutorial == "yes" or is_tutorial == "y" and is_started == False:
     while agreements == 0:
-        if response_check(input("Type yes to get an agreement. \n")) == "yes":
-            agreements += agreements_per_yes
-            print(agreements)
+        response_check(input("Type yes to get an agreement. \n"))
     print("Task: Get 10 Agreements!")
     while agreements < 10:
-            if response_check(input("Type yes to get agreements! \n")) == "yes":
-                agreements += agreements_per_yes
-                print(agreements)
+            response_check(input("Type yes to get agreements! \n"))
     print("Well Done!") # Text to instruct player
     time.sleep(1) # Delay in seconds
     print("You can use your agreements to purchase upgrades \n to get more agreements with each yes!") 
     time.sleep(1)
-    print("You can open the store by typing shop!")
-    time.sleep(1)
     #The tutorial teaches you some of the basics like typing yes and agreements. It a
-    while shop == False:
-        if response_check(input("Open the shop!")) == "shop":
-            is_shop = True
+    while is_shop == False:
+        print("You can open the store by typing shop! \n")
+        time.sleep(1)
+        response_check(input("Open the shop!"))
     if is_shop == True:
         shop(upgrades)
-        
-
-
-
+        while owned_upgrades["obedient man"] == 0:
+            upgrade_adder(input("Now purchase the Obedient Man upgrade by typing: obedient man!"))
     is_started = True
 
 
@@ -87,7 +112,6 @@ elif is_tutorial == "no" or is_tutorial == "n" and is_started == False:
     is_started == True
 #Code that decides whether the tutorial has been skipped
 
+
 # Game Loop / Main Game
 # input
-
- 
