@@ -12,11 +12,11 @@ is_started = False
 
 upgrades = {
     "obedient man": 10,
-    "yes please" : 50,
-    "yes day" : 200,
+    "yes please" : 75,
+    "yes day" : 500,
     "expert yesser" : 1000,
-    "never-say-never" : 5000,
-    "yes god" : 10000,
+    "never-say-never" : 3000,
+    "yes god" : 5250,
 #This dictionary includes the costs of the upgrades
 }
 
@@ -31,7 +31,7 @@ owned_upgrades = {
 }
 
 
-upgrade_multiplyer = {
+upgrade_multiplier = {
     "obedient man": 1,
     "yes please" : 5,
     "yes day" : 10,
@@ -51,13 +51,13 @@ def upgrade_adder(a): #This function is used to add upgrades to the player
     #Using global allows the variables to be changed in the function
     
     if a in upgrades:
-        multi = upgrade_multiplyer[a]
+        multi = upgrade_multiplier[a]
         cost = upgrades[a]
         if agreements >= cost:
             agreements_per_yes += multi
             agreements -= cost #Removes the cost from the agreements.
             owned_upgrades[a] += 1 #Adds one to the owned upgrades count
-            upgrades[a] += math.ceil(upgrades[a] * 0.05) #Increases the price by 0.005 and rounds it up to the nearest integer
+            upgrades[a] += math.ceil(upgrades[a] * 0.25) #Increases the price by 0.25 and rounds it up to the nearest integer
             print("You own", owned_upgrades[a], a)
         else:
              print("You are too poor for this...")
@@ -85,7 +85,8 @@ def response_check(a): #Checks if the response is valid and acts upon it
             # Sets is_shop to false if the input if close
         elif a == "yes":
             agreements += agreements_per_yes
-            print(agreements)
+
+            print("\n", agreements, "\n")
             # adds to the players agreements based on their current multiplier and prints their agreements if the input is yes
     else:
         return False
@@ -96,7 +97,7 @@ def response_check(a): #Checks if the response is valid and acts upon it
 # Tutorial
 is_tutorial = input("Would you like a tutorial (y/n) ? \n").lower()
 
-if is_tutorial == "y":
+if is_tutorial == "y" or "yes":
 
     while agreements == 0: #Runs as long as the player has zero agreements
         response_check(input("Type yes to get an agreement. \n")) #Calls the response check function which uses an algorithm to check what should be done based on the response.
@@ -133,7 +134,7 @@ if is_tutorial == "y":
     print("You have finished your training! \n")
     is_started = True #Starts the main loop
 
-elif is_tutorial == "n":
+elif is_tutorial == "n" or "no":
     print("You skipped the tutorial")
     is_started = True #Starts the main loop
 #Code that decides whether the tutorial has been skipped
