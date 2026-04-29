@@ -11,33 +11,33 @@ is_started = False
 # This decides whether the game itself has started, like when you skip the tutorial
 
 upgrades = {
-    "obedient man": 10,
+    "yes sir": 10,
     "yes please" : 75,
     "yes day" : 500,
     "expert yesser" : 1000,
     "never-say-never" : 3000,
-    "yes god" : 5250,
+    "yes-forever" : 5250,
 #This dictionary includes the costs of the upgrades
 }
 
 owned_upgrades = {
-    "obedient man": 0,
+    "yes sir": 0,
     "yes please" : 0,
     "yes day" : 0,
     "expert yesser" : 0,
     "never-say-never" : 0,
-    "yes god" : 0,
+    "yes-forever" : 0,
 #This is the amount of the upgrade that the player owns
 }
 
 
 upgrade_multiplier = {
-    "obedient man": 1,
+    "yes sir": 1,
     "yes please" : 5,
     "yes day" : 10,
     "expert yesser" : 20,
     "never-say-never" : 40,
-    "yes god" : 50,
+    "yes-forever" : 50,
 #These is the multiplier of all the upgrades
 
 }
@@ -97,7 +97,7 @@ def response_check(a): #Checks if the response is valid and acts upon it
 # Tutorial
 is_tutorial = input("Would you like a tutorial (y/n) ? \n").lower()
 
-if is_tutorial == "y" or "yes":
+if is_tutorial == "y" or is_tutorial == "yes":
 
     while agreements == 0: #Runs as long as the player has zero agreements
         response_check(input("Type yes to get an agreement. \n")) #Calls the response check function which uses an algorithm to check what should be done based on the response.
@@ -118,23 +118,20 @@ if is_tutorial == "y" or "yes":
         time.sleep(1)
         response_check(input("Open the shop! \n")) 
 
-    while owned_upgrades["obedient man"] == 0:  #Runs while the obedient man upgrade is not owned.
+    while owned_upgrades["yes sir"] == 0:  #Runs while the obedient man upgrade is not owned.
         if is_shop == True:
-            upgrade_adder(input("Now purchase the Obedient Man upgrade by typing: obedient man! \n"))
+            upgrade_adder(input("Now purchase the yes sir upgrade by typing: yes sir! \n"))
     
     while is_shop == True:
         response_check(input("Type 'close' to close the shop!: \n"))
-    
-    print("Now close the shop! \n")  
-    time.sleep(0.5)
 
-    print("Well Done!")
+    print("Well Done! \n")
     time.sleep(0.5)
 
     print("You have finished your training! \n")
     is_started = True #Starts the main loop
 
-elif is_tutorial == "n" or "no":
+elif is_tutorial == "n" or is_tutorial == "no":
     print("You skipped the tutorial")
     is_started = True #Starts the main loop
 #Code that decides whether the tutorial has been skipped
